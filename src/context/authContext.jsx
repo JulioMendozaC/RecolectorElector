@@ -29,7 +29,8 @@ export const AuthProvider = ({ children }) => {
             setIsAutenticated(true)
             console.log(res.data)
         } catch (error) {
-            setErrors(['Datos usuario o contraseña incorrectos'])
+            setErrors(error)
+            console.log(error)
 
         }
     }
@@ -40,7 +41,7 @@ export const AuthProvider = ({ children }) => {
             setIsAutenticated(true)
             console.log(res.data)
         } catch (error) {
-            setErrors(['Datos usuario o contraseña incorrectos'])
+            // setErrors(['Datos usuario o contraseña incorrectos'])
 
         }
     }
