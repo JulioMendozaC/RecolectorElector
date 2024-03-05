@@ -14,9 +14,7 @@ import { toast } from "sonner";
 export const LoginForm = () => {
 
 
-    const { register, handleSubmit, formState: {
-        errors
-    } } = useForm()
+    const { register, handleSubmit, formState: { errors } } = useForm()
 
     const { login, isAutenticated, errors: LoginErrors } = useAuth()
 
@@ -26,10 +24,14 @@ export const LoginForm = () => {
     })
 
 
+    useEffect(() => {
+        console.log(LoginErrors)
+    }, [LoginErrors])
+
 
     return (
         <form onSubmit={onSubmit}>
-            <div className="bg-red-500 text-white">
+            <div className="bg-red-500 text-white">{console.log(LoginErrors)}
                 {LoginErrors.map((error, i) => {
                     return <div key={i}>{error}</div>;
                 })}
