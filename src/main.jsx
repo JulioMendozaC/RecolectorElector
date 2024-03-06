@@ -9,9 +9,7 @@ import NavBar from "./components/Common/NavBar";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <NavBar />
-
-    <div className="flex h-[calc(100vh-100px)] items-center justify-center bg-background">
+    <div className="ml-[270px]">
       <App />
     
     </div>
