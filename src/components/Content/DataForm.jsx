@@ -1,5 +1,5 @@
-import { useEffect } from "react"
-import { useForm } from "react-hook-form"
+import { useEffect, useState } from "react"
+import { useForm, Controller } from "react-hook-form"
 import dayjs from "dayjs"
 import utc from "dayjs/plugin/utc"
 dayjs.extend(utc)
@@ -10,41 +10,23 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
 
 
 export const DataForm = ({ dataEdit }) => {
 
-    useEffect(() => {
-        if (dataEdit) {
-            async function loadData() {
-                await GetOneData(dataEdit._id)
-                setValue('nombre', dataEdit.nombre)
-                setValue('apellido_p', dataEdit.apellido_p)
-                setValue('apellido_m', dataEdit.apellido_m)
-                setValue('curp', dataEdit.curp)
-                setValue('fecha_nacimiento', dataEdit.fecha_nacimiento)
-                setValue('sexo', dataEdit.sexo)
-                setValue('calle', dataEdit.calle)
-                setValue('No_ext', dataEdit.No_ext)
-                setValue('No_int', dataEdit.No_int)
-                setValue('colonia_barrio', dataEdit.colonia_barrio)
-                setValue('codigo_postal', dataEdit.codigo_postal)
-                setValue('clave_electoral', dataEdit.clave_electoral)
-                setValue('seccion', dataEdit.seccion)
-                setValue('fecha_vigencia', dataEdit.fecha_vigencia)
-                setValue('promotor', dataEdit.promotor)
-                setValue('coordinador', dataEdit.coordinador)
 
-            }
-            loadData()
-        }
-       
-    }, [dataEdit])
+    const { register, handleSubmit, setValue, control, formState: { errors } } = useForm()
 
-
-    const { register, handleSubmit, setValue, formState: { errors } } = useForm()
-
-    const { GetOneData, CreateData, UpdateData, response } = useData()
+    const { GetOneData, GetAllData, CreateData, UpdateData, dataSelect } = useData()
 
 
 
@@ -55,6 +37,41 @@ export const DataForm = ({ dataEdit }) => {
             UpdateData(dataEdit._id, values)
     })
 
+    useEffect(() => {
+        GetAllData()
+    }, [])
+
+   
+
+
+
+    useEffect(() => {
+
+        if (dataEdit) {
+            async function loadData() {
+                await GetOneData(dataEdit._id)
+                setValue('nombre', dataEdit.nombre)
+                setValue('apellido_p', dataEdit.apellido_p)
+                setValue('apellido_m', dataEdit.apellido_m)
+                setValue('curp', dataEdit.curp)
+                setValue('fecha_nacimiento', dayjs.utc(dataEdit.fecha_nacimiento).format('YYYY-MM-DD'))
+                setValue('sexo', dataEdit.sexo)
+                setValue('calle', dataEdit.calle)
+                setValue('No_ext', dataEdit.No_ext)
+                setValue('No_int', dataEdit.No_int)
+                setValue('colonia_barrio', dataEdit.colonia_barrio)
+                setValue('codigo_postal', dataEdit.codigo_postal)
+                setValue('clave_electoral', dataEdit.clave_electoral)
+                setValue('seccion', dataEdit.seccion)
+                setValue('fecha_vigencia', dayjs.utc(dataEdit.fecha_vigencia).format('YYYY-MM-DD'))
+                setValue('promotor', dataEdit.promotor)
+                setValue('coordinador', dataEdit.coordinador)
+
+            }
+            loadData()
+        }
+
+    }, [dataEdit])
 
     return (
         <>
@@ -99,9 +116,25 @@ export const DataForm = ({ dataEdit }) => {
                         </div>
                         <div className="flex flex-col space-y-1.5 my-4">
                             <Label htmlFor="framework">Sexo</Label>
-                            <Input type="text"
-                                {...register("sexo", { required: true })}
-                            />
+                            <Controller
+                                name="sexo"
+                                control={control}
+                                defaultValue=""
+                                render={({ field }) =>
+                                    <Select onValueChange={field.onChange} defaultValue={field.value} {...field}  >
+                                        <SelectTrigger>
+                                            <SelectValue placeholder=" -- Seleccione --" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectGroup>
+                                                <SelectLabel>Sexo</SelectLabel>
+                                                <SelectItem value="Hombre">Hombre</SelectItem>
+                                                <SelectItem value="Mujer">Mujer</SelectItem>
+                                            </SelectGroup>
+                                        </SelectContent>
+                                    </Select>
+
+                                } />
                         </div>
                     </TabsContent>
                     <TabsContent value="datos-direccion">
@@ -151,9 +184,27 @@ export const DataForm = ({ dataEdit }) => {
                         </div>
                         <div className="flex flex-col space-y-1.5 my-4">
                             <Label htmlFor="framework">Seccion</Label>
-                            <Input type="text"
-                                {...register("seccion", { required: true })}
-                                placeholder="Ingresa la seccion" />
+                            <Controller
+                                name="seccion"
+                                control={control}
+                                defaultValue=""
+                                render={({ field }) =>
+                                    <Select onValueChange={field.onChange} defaultValue={field.value} {...field}  >
+                                        <SelectTrigger>
+                                            <SelectValue placeholder=" -- Seleccione --" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectGroup>
+                                                <SelectLabel>Seccion</SelectLabel>
+                                                {
+                                                    dataSelect.seccion.map(x => <SelectItem key={x._id} value={x.nombre}>{x.nombre}</SelectItem>
+                                                    )
+                                                }
+                                            </SelectGroup>
+                                        </SelectContent>
+                                    </Select>
+
+                                } />
                         </div>
                         <div className="flex flex-col space-y-1.5 my-4">
                             <Label htmlFor="framework">Fecha vigencia</Label>
@@ -163,15 +214,51 @@ export const DataForm = ({ dataEdit }) => {
                         </div>
                         <div className="flex flex-col space-y-1.5 my-4">
                             <Label htmlFor="framework">Promotor</Label>
-                            <Input type="text"
-                                {...register("promotor", { required: true })}
-                                placeholder="Ingresa la promotor" />
+                            <Controller
+                                name="promotor"
+                                control={control}
+                                defaultValue=""
+                                render={({ field }) =>
+                                    <Select onValueChange={field.onChange} defaultValue={field.value} {...field}  >
+                                        <SelectTrigger>
+                                            <SelectValue placeholder=" -- Seleccione --" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectGroup>
+                                                <SelectLabel>Promotor</SelectLabel>
+                                                {
+                                                    dataSelect.promotor.map(x => <SelectItem key={x._id} value={x.nombre}>{x.nombre}</SelectItem>
+                                                    )
+                                                }
+                                            </SelectGroup>
+                                        </SelectContent>
+                                    </Select>
+
+                                } />
                         </div>
                         <div className="flex flex-col space-y-1.5 my-4">
                             <Label htmlFor="framework">Cordinador</Label>
-                            <Input type="text"
-                                {...register("coordinador", { required: true })}
-                                placeholder="Ingresa el cordinador" />
+                            <Controller
+                                name="coordinador"
+                                control={control}
+                                defaultValue=""
+                                render={({ field }) =>
+                                    <Select onValueChange={field.onChange} defaultValue={field.value} {...field}  >
+                                        <SelectTrigger>
+                                            <SelectValue placeholder=" -- Seleccione --" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectGroup>
+                                                <SelectLabel>Coordinador</SelectLabel>
+                                                {
+                                                    dataSelect.coordinador.map(x => <SelectItem key={x._id} value={x.nombre}>{x.nombre}</SelectItem>
+                                                    )
+                                                }
+                                            </SelectGroup>
+                                        </SelectContent>
+                                    </Select>
+
+                                } />
                         </div>
                     </TabsContent>
                     <Button>Enviar</Button>

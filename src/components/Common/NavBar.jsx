@@ -1,15 +1,9 @@
-import {Link} from "react-router-dom";
 
 
-function NavBar() {
+export function NavBar({title}) {
   return (
-    <nav className="bg-background  flex justify-between py-5 px-10">
-    {/* <Link to={
-      isAuthenticated ? '/tasks' : '/'
-    }>
-    </Link> */}
-        <h1 className="text-2xl font-bold text-white">Captura de datos</h1>
-
+    <nav className="bg-background  flex justify-between py-5 ">
+        <h1 className="text-2xl font-bold text-white">{title}</h1>
       <>
         <ul className="flex gap-x-2">
           {/* <li>Welcome {user.username}</li> */}
@@ -36,4 +30,3 @@ function NavBar() {
   );
 }
 
-export default NavBar;

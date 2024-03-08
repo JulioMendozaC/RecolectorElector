@@ -1,70 +1,67 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
-import { CreateRequest, GetRequest, GetsRequest, GetAllRequest,  UpdateRequest, DeleteRequest } from "../api/data";
+import { GetRequest, CreateRequest, GetsRequest, UpdateRequest, DeleteRequest } from "../api/secciones";
 
 
-export const DataContext = createContext()
+export const SeccionContext = createContext()
 
-export const useData = () => {
-    const context = useContext(DataContext);
+export const useSeccion = () => {
+    const context = useContext(SeccionContext);
     if (!context) {
-        throw new Error("useData most be used whithin Data");
+        throw new Error("useSeccion most be used whithin provider");
     }
     return context;
 };
 
 
-export const DataProvider = ({ children }) => {
+export const SeccionProvider = ({ children }) => {
 
-    const [data, setData] = useState(null)
+    const [data, setdata] = useState(null)
     const [editData, setEditData] = useState(null)
-    const [dataSelect, setDataSelect] = useState(null)
     const [response, setResponse] = useState(null)
     const [errors, setErrors] = useState([])
- 
 
     const GetOneData = async (id) => {
         try {
             const res = await GetsRequest(id)
             setEditData(res.data)
+            // setResponse(res.data)
         } catch (error) {
-            setErrors(error.response.data)
+            // setErrors(['Datos usuario o contraseña incorrectos'])
+            console.log(error)
         }
     }
 
     const GetData = async () => {
         try {
             const res = await GetRequest()
-            setData(res.data.reverse())
+            setdata(res.data.reverse())
         } catch (error) {
-            setErrors(error.response.data)
-        }
-    }
-
-    const GetAllData = async () => {
-        try {
-            const res = await GetAllRequest()
-            setDataSelect(res.data)
-        } catch (error) {
-            setErrors(error.response.data)
+            // setErrors(['Datos usuario o contraseña incorrectos'])
+            console.log(error)
         }
     }
     const CreateData = async (data) => {
         try {
             const res = await CreateRequest(data)
-            setData(res.data.data[0].reverse())
+            setdata(res.data.data.reverse())
+            console.log(res.data.data)
             setResponse(res.data.msg)
+            
         } catch (error) {
             setErrors(error.response.data)
+            console.log(error.response.data)
         }
     }
+
     const UpdateData = async (id, data) => {
         try {
             const res = await UpdateRequest(id, data)
             setResponse(res.data)
             GetData()
         } catch (error) {
-            setErrors(error.response.data)
+            // setErrors(['Datos usuario o contraseña incorrectos'])
+            console.log(error)
         }
     }
     const DeleteData = async (id) => {
@@ -72,29 +69,28 @@ export const DataProvider = ({ children }) => {
             const res = await DeleteRequest(id)
             setResponse(res.data)
             GetData()
-
         } catch (error) {
-            setErrors(error.response.data)
+            // setErrors(['Datos usuario o contraseña incorrectos'])
+            console.log(error)
         }
     }
 
 
 
     return (
-        <DataContext.Provider value={{
+        <SeccionContext.Provider value={{
             data,
             editData,
-            dataSelect,
             response,
-            GetData,
+            errors,
             GetOneData,
-            GetAllData,
+            GetData,
             CreateData,
             UpdateData,
             DeleteData
         }}>
             {children}
-        </DataContext.Provider>
+        </SeccionContext.Provider>
 
     )
 

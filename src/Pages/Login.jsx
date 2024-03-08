@@ -25,6 +25,7 @@ export const Login = () => {
   
 
   return (
+    <div className="flex h-[calc(100vh-100px)] items-center justify-center bg-background my-10">
     <Card className="w-[45vh] border-1">
       <CardHeader>
         <CardTitle>Inicio de sesión</CardTitle>
@@ -36,5 +37,6 @@ export const Login = () => {
       <CardFooter className="flex justify-between">
       </CardFooter>
     </Card>
+    </div>
   )
 }

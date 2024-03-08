@@ -1,9 +1,15 @@
 import { useEffect, useState } from 'react'
+import dayjs from "dayjs"
+import utc from "dayjs/plugin/utc"
+dayjs.extend(utc)
+
 import { useData } from '../../context/dataContext'
 
 import { Form } from '../../components/Common/Form'
+import { NavBar } from '../../components/Common/NavBar'
 import { DataForm } from '../../components/Content/DataForm'
 import { SimpleTable } from "@/components/Common/SimpleTable"
+import { PromotorTable } from "@/components/Common/PromotorTable"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import {
@@ -20,7 +26,6 @@ export const Promovido = () => {
 
     const { GetData, data, response } = useData()
     const [newData, setNewData] = useState(data)
-    const [isSuscribe, setIsSuscribe] = useState(false)
 
     useEffect(() => {
         GetData()
@@ -41,6 +46,8 @@ export const Promovido = () => {
           
     }, [])
 
+
+ 
     const columns = [
 
         {
@@ -57,7 +64,7 @@ export const Promovido = () => {
         },
         {
             header: "Vigencia",
-            accessorKey: "fecha_vigencia",
+            cell: date => dayjs.utc(date.fecha_vigencia).format('DD-MM-YYYY')
         },
         {
             header: "Promotor",
@@ -73,17 +80,12 @@ export const Promovido = () => {
                 if (response[0] == "Datos creados correctament") {
                     document.getElementById('close').click()
                 }
-                if (response.msg == 'Datos actualizados') {
-                    GetData()
-                    document.getElementById('close').click()
-                }
-                if (response.msg == 'Datos eliminados correctament') {
-                    GetData()
-                }
             }
         }
     }, [data, response])
     return (
+        <>
+        <NavBar title={'Promovidos'} />
         <div className="flex h-[calc(100vh-100px)] items-center justify-center bg-background">
             <Card className="w-[120vh] border-0 ">
                 <Dialog>
@@ -114,5 +116,6 @@ export const Promovido = () => {
                 </CardContent>
             </Card>
         </div>
+        </>
     )
 }

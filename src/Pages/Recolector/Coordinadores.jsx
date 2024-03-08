@@ -1,34 +1,22 @@
 import { useEffect, useState } from 'react'
-import { useSeccion } from '../../context/seccionContext'
+import { useCordinador } from '../../context/coordinadorContext'
 
 import { Form } from '../../components/Common/Form'
 import { NavBar } from '../../components/Common/NavBar'
-import { SeccionForm } from '../../components/Content/SeccionForm'
-import { SeccionTable } from "@/components/Common/SeccionTable"
+import { CoordinadorForm } from '../../components/Content/CoordinadorForm'
+import { CoordiandorTable } from "@/components/Common/CoordiandorTable"
+import { NullTable } from "@/components/Common/NullTable"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from "@/components/ui/dialog"
-export const Secciones = () => {
 
-  const { GetData, data, response } = useSeccion()
+export const Coordinadores = () => {
+  const { GetData, data, response } = useCordinador()
   const [newData, setNewData] = useState(data)
 
   useEffect(() => {
     GetData()
     setNewData(data)
-    console.log()
-
-    //   Filtrar
-    // const busqueda = data.reduce((acc, persona) => {
-    //     acc[persona.seccion] = ++acc[persona.seccion] || 0;
-    //     return acc;
-    //   }, {});
-
-    //   const duplicados = data.filter( (persona) => {
-    //       return busqueda[persona.seccion];
-    //   });
-
-    //   console.log(duplicados);
 
 
   }, [])
@@ -36,30 +24,25 @@ export const Secciones = () => {
   const columns = [
 
     {
-      header: "Clave",
-      accessorKey: "numero"
-    },
-    {
-      header: "Seccion",
+      header: "Nombre",
       accessorKey: "nombre"
-    },
+    }
   ]
 
   useEffect(() => {
     if (data) {
       setNewData(data)
       if (response) {
-        if (response[0] == "Seccion Creado") {
+        if (response.msg == "Coordinador Creado") {
           document.getElementById('close').click()
         }
       }
     }
 
   }, [data, response])
-
   return (
     <>
-      <NavBar title={'Seccion'} />
+      <NavBar title={'Coordiandores'} />
       <div className="flex h-[calc(100vh-100px)] items-center justify-center bg-background">
         <Card className="w-[60vh] border-0">
           <Dialog>
@@ -71,21 +54,22 @@ export const Secciones = () => {
             </DialogClose>
             <DialogContent className="sm:max-w-[60vh] border-0">
               <DialogHeader>
-                <DialogTitle className='text-white'>Añadir Seccion</DialogTitle>
+                <DialogTitle className='text-white'>Añadir Promotor</DialogTitle>
               </DialogHeader>
               <Form>
-                <SeccionForm />
+                <CoordinadorForm />
               </Form>
               <DialogFooter>
               </DialogFooter>
             </DialogContent>
           </Dialog>
           <CardContent>
+            {console.log(data)}
             {
-              data && newData ?
-                <SeccionTable data={newData} columns={columns} />
+              data  && newData ?
+                <CoordiandorTable data={newData} columns={columns} />
                 :
-                <div className=""></div>
+                <NullTable data={newData} columns={columns} />
             }
           </CardContent>
         </Card>

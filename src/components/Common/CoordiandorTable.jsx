@@ -1,9 +1,8 @@
 import { useReactTable, getCoreRowModel, flexRender, getPaginationRowModel, getSortedRowModel, getFilteredRowModel } from "@tanstack/react-table"
 import { useEffect, useState } from "react"
+import { useCordinador } from '../../context/coordinadorContext'
 
-import { useData } from '../../context/dataContext'
-
-import { DataForm } from "../Content/DataForm"
+import { CoordinadorForm } from "../Content/CoordinadorForm"
 import { Form } from "./Form"
 
 import { Input } from "@/components/ui/input"
@@ -22,7 +21,6 @@ import { Button } from "@/components/ui/button"
 import {
     Dialog,
     DialogContent,
-    DialogDescription,
     DialogFooter,
     DialogHeader,
     DialogTitle,
@@ -54,24 +52,20 @@ import {
 import {
     Pagination,
     PaginationContent,
-    PaginationEllipsis,
     PaginationItem,
-    PaginationLink,
     PaginationNext,
     PaginationPrevious,
 } from "@/components/ui/pagination"
 
 
-
-
-export const SimpleTable = ({ data, columns }) => {
+export const CoordiandorTable = ({ data, columns }) => {
 
     const [sorting, setSorting] = useState([])
     const [filtering, setFiltering] = useState("")
     const [dataEdit, setDataEdit] = useState([])
 
 
-    const { DeleteData, GetData, response } = useData()
+    const { DeleteData, response } = useCordinador()
 
 
     const table = useReactTable({
@@ -88,14 +82,18 @@ export const SimpleTable = ({ data, columns }) => {
         onSortingChange: setSorting,
         onGlobalFilterChange: setFiltering
     })
-    
+
     useEffect(() => {
-       if(response){
-        if (response.msg == 'Datos actualizados') {
-            document.getElementById('btn-edit').click()
-        }
-       }
-    }, [response])
+      
+        
+          if (response) {
+            if (response.msg[0] == 'Datos actualizados') {
+                document.getElementById('btn-edit').click()
+              }
+          }
+
+    
+      }, [ response])
 
     return (
         <div>
@@ -113,8 +111,7 @@ export const SimpleTable = ({ data, columns }) => {
                     />
                 </div>
             </div>
-
-          {
+            {
             data.length != []? 
             <>
               <Table >
@@ -218,7 +215,7 @@ export const SimpleTable = ({ data, columns }) => {
             <TableBody>
                 
                     <TableRow  className='text-center'>
-                            <TableCell colSpan='12'>
+                            <TableCell colspan='12'>
                                 No hay datos....
                             </TableCell>
                     </TableRow>
@@ -235,14 +232,14 @@ export const SimpleTable = ({ data, columns }) => {
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-[60vh]">
                     <DialogHeader>
-                        <DialogTitle>Añadir Datos</DialogTitle>
+                        <DialogTitle>Añadir Datos c</DialogTitle>
                     </DialogHeader>
                     <Form>
                         {
                             dataEdit == [] ?
-                                <DataForm />
+                                <CoordinadorForm />
                                 :
-                                <DataForm dataEdit={dataEdit} />
+                                <CoordinadorForm dataEdit={dataEdit} />
                         }
                     </Form>
                     <DialogFooter>
