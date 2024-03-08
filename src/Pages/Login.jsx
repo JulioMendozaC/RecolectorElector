@@ -25,7 +25,7 @@ export const Login = () => {
   
 
   return (
-    <div className="flex h-[calc(100vh-100px)] items-center justify-center bg-background my-10">
+    <div className="flex ml-[-30vh] h-[calc(100vh-100px)] items-center justify-center bg-background my-10">
     <Card className="w-[45vh] border-1">
       <CardHeader>
         <CardTitle>Inicio de sesión</CardTitle>

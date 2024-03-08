@@ -2,7 +2,7 @@
 
 export function NavBar({title}) {
   return (
-    <nav className="bg-background  flex justify-between py-5 ">
+    <nav className="  bg-background  flex justify-between py-5 ">
         <h1 className="text-2xl font-bold text-white">{title}</h1>
       <>
         <ul className="flex gap-x-2">

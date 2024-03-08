@@ -6,7 +6,7 @@ import "../app/globals.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <div className="ml-[270px]">
+    <div className="ml-[30vh]">
       <App />
     
     </div>
