@@ -43,6 +43,10 @@ export const Secciones = () => {
       header: "Seccion",
       accessorKey: "nombre"
     },
+    {
+      header: "Lista nominals",
+      accessorKey: "lista_nominal"
+    }, 
   ]
 
   useEffect(() => {

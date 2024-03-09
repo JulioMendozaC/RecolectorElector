@@ -66,6 +66,17 @@ export const SeccionForm = ({ dataEdit }) => {
                     )
                 }
             </div>
+            <div className="flex flex-col space-y-1.5 py-3">
+                <Label htmlFor="username">Clave</Label>
+                <Input type="number"
+                    {...register("lista_nominal", { required: true })}
+                    placeholder="Ingresa el numero de lista nominal" />
+                {
+                    errors.lista_nominal && (
+                        <p className="text-red-500 text-xs">El nombre es obligatorio</p>
+                    )
+                }
+            </div>
             <Button>Iniciar sesión</Button>
 
         </form>
