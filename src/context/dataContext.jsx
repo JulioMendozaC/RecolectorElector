@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from "react";
 
-import { CreateRequest, GetRequest, GetsRequest, GetAllRequest,  UpdateRequest, DeleteRequest } from "../api/data";
+import { CreateRequest, GetRequest, GetsRequest, GetAllRequest, GetAnalytics, GetSeccion, UpdateRequest, DeleteRequest } from "../api/data";
 
 
 export const DataContext = createContext()
@@ -21,7 +21,7 @@ export const DataProvider = ({ children }) => {
     const [dataSelect, setDataSelect] = useState(null)
     const [response, setResponse] = useState(null)
     const [errors, setErrors] = useState([])
- 
+
 
     const GetOneData = async (id) => {
         try {
@@ -78,6 +78,27 @@ export const DataProvider = ({ children }) => {
         }
     }
 
+    const AllAnalytics = async () => {
+        try {
+            const res = await GetAnalytics()
+            if (res.data.length != 0)
+                setData(res.data)
+        } catch (error) {
+            setErrors(error.response.data)
+        }
+    }
+
+    const GetSeccions = async (data) => {
+        try {
+            console.log(data)
+            const res = await GetSeccion(data)
+            setResponse(res.data)
+            console.log(res.data)
+        } catch (error) {
+            setErrors(error.response.data)
+        }
+    }
+
 
 
     return (
@@ -89,9 +110,11 @@ export const DataProvider = ({ children }) => {
             GetData,
             GetOneData,
             GetAllData,
+            GetSeccions,
             CreateData,
             UpdateData,
-            DeleteData
+            DeleteData,
+            AllAnalytics
         }}>
             {children}
         </DataContext.Provider>

@@ -1,10 +1,9 @@
-import "../Styles/style.css";
 import { useAuth } from '../../context/authContext'
 
 import { Link } from 'react-router-dom'
 import { ButtonSide } from "./ButtonSide";
 import { Separator } from "@/components/ui/separator"
-import { LogOut, MoreHorizontal, Settings, Users, UserPlus, MapPinned, CreditCard } from 'lucide-react';
+import { LogOut, MoreHorizontal, Settings, Users, UserPlus, MapPinned, CreditCard, BarChart, PieChart } from 'lucide-react';
 
 import {
   Popover,
@@ -46,6 +45,19 @@ export const Sidebar = () => {
                   <ButtonSide text={'Promovidos'} className='w-full' icon={CreditCard} />
                 </Link>
               </div>
+              <Separator className='my-4'/>
+              <h3 className=" mx-3 my-3 text-ms font-semibold text-foreground ">Estadisticas</h3>
+
+              <div className="flex flex-col gap-1 w-full">
+                <Link to={'/Charts'}>
+                  <ButtonSide text={'General'} className='w-full' icon={BarChart} />
+                </Link>
+              </div>
+              <div className="flex flex-col gap-1 w-full">
+                <Link to={'/SeccionCharts'}>
+                  <ButtonSide text={'Secciones'} className='w-full' icon={PieChart} />
+                </Link>
+              </div>
 
 
               <div className="absolute left-0 bottom-3 w-full px-3">
@@ -77,7 +89,7 @@ export const Sidebar = () => {
           </div>
         </aside>
         :
-        <div className=""></div>
+        null
       }
 
     </>

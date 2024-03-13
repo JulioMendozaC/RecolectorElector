@@ -16,8 +16,6 @@ export const Coordinadores = () => {
 
   useEffect(() => {
     GetData()
-    setNewData(data)
-
 
   }, [])
 

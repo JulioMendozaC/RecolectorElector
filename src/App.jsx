@@ -13,6 +13,8 @@ import { Promovido } from "./Pages/Recolector/Promovido";
 import { Promotores } from "./Pages/Recolector/Promotores";
 import { Coordinadores } from "./Pages/Recolector/Coordinadores";
 import { Secciones } from "./Pages/Recolector/Secciones";
+import { Charts } from "./Pages/Estadisticas/GeneralCharts";
+import { SeccionCharts } from "./Pages/Estadisticas/SeccionCharts";
 
 export const App = () => {
   return (
@@ -32,6 +34,8 @@ export const App = () => {
                     <Route path="/Coordinadores" element={<Coordinadores />} />
                     <Route path="/Secciones" element={<Secciones />} />
                     <Route path="/Promovido" element={<Promovido />} />
+                    <Route path="/Charts" element={<Charts />} />
+                    <Route path="/SeccionCharts" element={<SeccionCharts />} />
                   </Route>
                 </Routes>
               </BrowserRouter>

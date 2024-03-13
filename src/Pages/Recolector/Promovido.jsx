@@ -35,7 +35,7 @@ export const Promovido = () => {
 
     const { GetData, GetAllData, data, dataSelect, response } = useData()
     const [newData, setNewData] = useState([])
-    const [archivo, setArchivo] = useState()
+    const [archivo, setArchivo] = useState(null)
 
     const columns = [
 
@@ -226,7 +226,7 @@ export const Promovido = () => {
                             </div>
                             <div className="mx-5">
                                 {
-                                    newData ?
+                                    newData && archivo ?
                                         <Button><CSVLink data={newData} filename={`${archivo}.csv`}>
                                             Download me
                                         </CSVLink></Button>
