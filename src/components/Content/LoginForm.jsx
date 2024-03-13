@@ -7,8 +7,8 @@ import { useAuth } from '../../context/authContext'
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import { toast } from "sonner";
-
+import { Toast } from "@radix-ui/react-toast";
+ 
 
 
 export const LoginForm = () => {
@@ -31,7 +31,7 @@ export const LoginForm = () => {
 
     return (
         <form onSubmit={onSubmit}>
-            <div className="bg-red-500 text-white">{console.log(LoginErrors)}
+            <div className="bg-red-500 text-white">
                 {LoginErrors.map((error, i) => {
                     return <div key={i}>{error}</div>;
                 })}

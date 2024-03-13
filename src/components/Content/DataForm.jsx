@@ -136,6 +136,12 @@ export const DataForm = ({ dataEdit }) => {
 
                                 } />
                         </div>
+                        <div className="flex flex-col space-y-1.5 my-4">
+                            <Label htmlFor="name">Telefono</Label>
+                            <Input type="number"
+                                {...register("telefono", { required: true })}
+                                placeholder="Ingresa el numero telefonico" />
+                        </div>
                     </TabsContent>
                     <TabsContent value="datos-direccion">
                         <div className="flex flex-col space-y-1.5 my-4">

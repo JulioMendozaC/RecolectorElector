@@ -35,7 +35,8 @@ export const Promovido = () => {
 
     const { GetData, GetAllData, data, dataSelect, response } = useData()
     const [newData, setNewData] = useState([])
-    const [archivo, setArchivo] = useState(null)
+    const [archivo, setArchivo] = useState('')
+    const [ecxel, setEcxel] = useState(null)
 
     const columns = [
 
@@ -85,6 +86,7 @@ export const Promovido = () => {
                 }
             }
         }
+
     }, [data, response])
 
 
@@ -120,7 +122,7 @@ export const Promovido = () => {
             if (filters == 'fecha_nacimiento')
                 return busqueda[persona.fecha_nacimiento]
         });
-        console.log(busqueda)
+
         if (duplicados.length > 0)
             setNewData(duplicados)
         else
@@ -131,17 +133,44 @@ export const Promovido = () => {
 
     const FiltrarPor = (op, filtros) => {
 
-        setArchivo(filtros)
 
         if (op == 'coordinador') {
-            const filtro = data.filter((dato) => dato.coordinador == filtros);
+
+            // ? Filtar en la tabla
+            const filtro = data.filter(dato => dato.coordinador == filtros);
             setNewData(filtro)
+
+            // ? Datos ecxel
+            const getEcxel = filtro.map(x => ({
+                Nombre: x.nombre + ' ' + x.apellido_p + ' ' + x.apellido_m,
+                Seccion: x.seccion,
+                Promotor: x.promotor,
+                Telefono: x.telefono
+
+            }))
+            setEcxel(getEcxel)
+
+
         }
 
         if (op == 'promotor') {
             const filtro = data.filter((dato) => dato.promotor == filtros);
             setNewData(filtro)
+
+            // ? Datos ecxel
+            const getEcxel = filtro.map(x => ({
+                Nombre: x.nombre + ' ' + x.apellido_p + ' ' + x.apellido_m,
+                Seccion: x.seccion,
+                coordinador: x.coordinador,
+                Telefono: x.telefono
+
+
+            }))
+            setEcxel(getEcxel)
+            
         }
+
+        setArchivo(filtros)
 
 
     }
@@ -189,7 +218,7 @@ export const Promovido = () => {
                                 </Select>
                             </div>
                             <div className="mx-5">
-                                <Select onValueChange={(e) => FiltrarPor('coordinador', e)}>
+                                <Select id='selectCoor' onValueChange={(e) => FiltrarPor('coordinador', e)}>
                                     <SelectTrigger className="w-[230px]">
                                         <SelectValue placeholder="Filtrar por coordinador" />
                                     </SelectTrigger>
@@ -220,15 +249,16 @@ export const Promovido = () => {
                                                     :
                                                     <SelectItem value="-">No hay coordinadores</SelectItem>
                                             }
+                                            
                                         </SelectGroup>
                                     </SelectContent>
                                 </Select>
                             </div>
                             <div className="mx-5">
                                 {
-                                    newData && archivo ?
-                                        <Button><CSVLink data={newData} filename={`${archivo}.csv`}>
-                                            Download me
+                                    data && ecxel && archivo ?
+                                        <Button><CSVLink data={ecxel} filename={`${archivo}.csv`}>
+                                            Download
                                         </CSVLink></Button>
                                         : null
                                 }

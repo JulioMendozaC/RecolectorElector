@@ -27,12 +27,15 @@ export const AuthProvider = ({ children }) => {
             const res = await loginRequest(user)
             setUser(res.data)
             setIsAutenticated(true)
-            console.log(res.data)
         } catch (error) {
-            setErrors(error.response)
-            console.log(error)
-
+            setErrors(error.response.data.message)
         }
+    }
+
+    const logOut = async () => {
+       Cookies.remove('token')
+       setIsAutenticated(false)
+       setUser(null)
     }
     const CreateData = async (user) => {
         try {
@@ -94,7 +97,8 @@ export const AuthProvider = ({ children }) => {
             errors,
             isloading,
             isAutenticated,
-            login
+            login,
+            logOut
         }}>
             {children}
         </AuthContext.Provider>

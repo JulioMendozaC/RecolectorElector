@@ -14,7 +14,7 @@ import { Button } from "../ui/button";
 
 export const Sidebar = () => {
 
-  const { isAutenticated } = useAuth();
+  const { isAutenticated, logOut } = useAuth();
 
   return (
 
@@ -77,8 +77,8 @@ export const Sidebar = () => {
                   </PopoverTrigger>
                   <PopoverContent className='mb-2 w-56 rounded-[1rem]'>
                     <div className="space-1-y">
-                      <Link>
-                        <ButtonSide size='sm' className='w-full' text={'Cerrar Sesion'} icon={LogOut}></ButtonSide>
+                      <Link onClick={logOut}>
+                        <ButtonSide size='sm' className='w-full' text={'Cerrar Sesion'} icon={LogOut}  ></ButtonSide>
                       </Link>
                     </div>
                   </PopoverContent>
