@@ -20,12 +20,16 @@
     "windows": [
       {
         "title": "recolectorapp",
-        "width": 800,
-        "height": 600
+        "width": 1200,
+        "height": 900,
+        "center": true,
+        "maximized": true,
+        "additionalBrowserArgs": "--disable-web-security"
       }
     ],
     "security": {
-      "csp": null
+      "csp": "",
+      "dangerousUseHttpScheme": true
     },
     "bundle": {
       "active": true,
@@ -33,7 +37,7 @@
       "identifier": "main--dainty-moxie-adb21f.netlify.app",
       "icon": [
         "icons/32x32.png",
-        "icons/128x128.png",
+        "icons/Square310x310Logo.png",
         "icons/128x128@2x.png",
         "icons/icon.icns",
         "icons/icon.ico"

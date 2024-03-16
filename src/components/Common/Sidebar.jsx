@@ -11,53 +11,108 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { Button } from "../ui/button";
+import { useEffect, useState } from 'react';
 
 export const Sidebar = () => {
 
-  const { isAutenticated, logOut } = useAuth();
+  const { isAutenticated, logOut, user } = useAuth();
+
+  const [rol, setRol] = useState(null)
+
+
+  useEffect(() => {
+    if (user)
+      if (user.lemgth != 0) {
+        console.log(user)
+        setRol(user.rol)
+        console.log(rol)
+      }
+
+
+
+  }, [user])
+
 
   return (
 
     <>
-      {isAutenticated ?
+      {isAutenticated ? (
         <aside className="w-[270px] max-w-xs h-screen fixed left-0 top-0  z-40 border-r border-gray-500">
           <div className="h-full px-3 py-4">
             <h3 className=" mx-3 text-lg font-semibold text-foreground ">RecolElector</h3>
 
             <div className="mt-5">
-              <div className="flex flex-col gap-1 w-full">
-                <Link to={'/Promotores'}>
-                  <ButtonSide text={'Promotores'} className='w-full' icon={UserPlus} />
-                </Link>
-              </div>
-              <div className="flex flex-col gap-1 w-full">
-                <Link to={'/Coordinadores'}>
-                  <ButtonSide text={'Coordinadores'} className='w-full' icon={Users} />
-                </Link>
-              </div>
-              <div className="flex flex-col gap-1 w-full">
-                <Link to={'/Secciones'}>
-                  <ButtonSide text={'Secciones'} className='w-full' icon={MapPinned} />
-                </Link>
-              </div>
-              <div className="flex flex-col gap-1 w-full">
-                <Link to={'/Promovido'}>
-                  <ButtonSide text={'Promovidos'} className='w-full' icon={CreditCard} />
-                </Link>
-              </div>
-              <Separator className='my-4'/>
-              <h3 className=" mx-3 my-3 text-ms font-semibold text-foreground ">Estadisticas</h3>
+{console.log(rol)}
+              {rol == 'administrador' ? (
+                <div className="">
+                  <Separator className='my-4' />
+                  <h3 className=" mx-3 my-3 text-ms font-semibold text-foreground ">Administacion</h3>
 
-              <div className="flex flex-col gap-1 w-full">
-                <Link to={'/Charts'}>
-                  <ButtonSide text={'General'} className='w-full' icon={BarChart} />
-                </Link>
-              </div>
-              <div className="flex flex-col gap-1 w-full">
-                <Link to={'/SeccionCharts'}>
-                  <ButtonSide text={'Secciones'} className='w-full' icon={PieChart} />
-                </Link>
-              </div>
+                  <div className="flex flex-col gap-1 w-full">
+                    <Link to={'/Users'}>
+                      <ButtonSide text={'Usuarios'} className='w-full' icon={Users} />
+                    </Link>
+                    <Link to={'/Charts'}>
+                      <ButtonSide text={'General'} className='w-full' icon={BarChart} />
+                    </Link>
+                  </div>
+                  <div className="flex flex-col gap-1 w-full">
+                    <Link to={'/SeccionCharts'}>
+                      <ButtonSide text={'Secciones'} className='w-full' icon={PieChart} />
+                    </Link>
+                  </div>
+                  <Separator className='my-4' />
+                  <h3 className=" mx-3 my-3 text-ms font-semibold text-foreground ">Recoleccion</h3>
+
+                  <div className="flex flex-col gap-1 w-full">
+                    <Link to={'/Promotores'}>
+                      <ButtonSide text={'Promotores'} className='w-full' icon={UserPlus} />
+                    </Link>
+                  </div>
+                  <div className="flex flex-col gap-1 w-full">
+                    <Link to={'/Coordinadores'}>
+                      <ButtonSide text={'Coordinadores'} className='w-full' icon={Users} />
+                    </Link>
+                  </div>
+                  <div className="flex flex-col gap-1 w-full">
+                    <Link to={'/Secciones'}>
+                      <ButtonSide text={'Secciones'} className='w-full' icon={MapPinned} />
+                    </Link>
+                  </div>
+                  <div className="flex flex-col gap-1 w-full">
+                    <Link to={'/Promovido'}>
+                      <ButtonSide text={'Promovidos'} className='w-full' icon={CreditCard} />
+                    </Link>
+                  </div>
+                </div>
+              )
+                :
+                <div className="mt-5">
+                  <Separator className='my-4' />
+                  <h3 className=" mx-3 my-3 text-ms font-semibold text-foreground ">Recoleccion</h3>
+
+                  <div className="flex flex-col gap-1 w-full">
+                    <Link to={'/Promotores'}>
+                      <ButtonSide text={'Promotores'} className='w-full' icon={UserPlus} />
+                    </Link>
+                  </div>
+                  <div className="flex flex-col gap-1 w-full">
+                    <Link to={'/Coordinadores'}>
+                      <ButtonSide text={'Coordinadores'} className='w-full' icon={Users} />
+                    </Link>
+                  </div>
+                  <div className="flex flex-col gap-1 w-full">
+                    <Link to={'/Secciones'}>
+                      <ButtonSide text={'Secciones'} className='w-full' icon={MapPinned} />
+                    </Link>
+                  </div>
+                  <div className="flex flex-col gap-1 w-full">
+                    <Link to={'/Promovido'}>
+                      <ButtonSide text={'Promovidos'} className='w-full' icon={CreditCard} />
+                    </Link>
+                  </div>
+                </div>
+              }
 
 
               <div className="absolute left-0 bottom-3 w-full px-3">
@@ -88,7 +143,7 @@ export const Sidebar = () => {
             </div>
           </div>
         </aside>
-        :
+      ) :
         null
       }
 

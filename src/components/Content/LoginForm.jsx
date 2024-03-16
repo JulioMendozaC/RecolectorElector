@@ -7,8 +7,8 @@ import { useAuth } from '../../context/authContext'
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import { Toast } from "@radix-ui/react-toast";
- 
+import { toast } from "sonner";
+
 
 
 export const LoginForm = () => {

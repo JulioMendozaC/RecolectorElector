@@ -102,7 +102,7 @@ export const SeccionCharts = () => {
 
                       // ? Sexo porcenatjes
 
-                      let getSexo = data.Data.map(x => x.sexo)
+                      let getSexo = response.Data.map(x => x.sexo)
 
                       let getHombres = getSexo.filter(x => x == 'Hombre')
                       setHombres(getHombres.length)
@@ -273,90 +273,94 @@ export const SeccionCharts = () => {
                             </form>
                         </div>
                     </div>
+                   {valueGen.length != 0 ? 
                     <Tabs defaultValue="general" className="space-y-4">
-                        <TabsList>
-                            <TabsTrigger value="general">
-                                General
-                            </TabsTrigger>
-                        </TabsList>
-                        <TabsContent value="general" className="space-y-4">
-                            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                                {porcentaje > 100 ?
+                    <TabsList>
+                        <TabsTrigger value="general">
+                            General
+                        </TabsTrigger>
+                    </TabsList>
+                    <TabsContent value="general" className="space-y-4">
+                        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+                            {porcentaje > 100 ?
+                                <CardDashboard
+                                    title={'Promovidos vs lista nominal'}
+                                    data={`Promovidos: ${porcentaje}%`}
+                                    description={`De la lista nominal de  ${valueSeccion} `}
+                                    size={'col-span-1 text-red-600'}
+                                />
+                                :
+                                <CardDashboard
+                                    title={'Promovidos vs lista nominal'}
+                                    data={`Promovidos: ${porcentaje}%`}
+                                    description={`De la lista nominal de  ${valueSeccion} `}
+                                    size={'col-span-1 '}
+                                />
+                            }
+
+                            <CardDashboard
+                                title={'Edad'}
+                                data={`Promedio entre: ${moda} - ${media} `}
+                                description={`La edad media de los promovidos es de  ${moda} `}
+                                size={'col-span-1'}
+                            />
+
+                            {
+                                hombres > mujeres ?
                                     <CardDashboard
-                                        title={'Promovidos vs lista nominal'}
-                                        data={`Promovidos: ${porcentaje}%`}
-                                        description={`De la lista nominal de  ${valueSeccion} `}
-                                        size={'col-span-1 text-red-600'}
+                                        title={'Sexo'}
+                                        data={` Hombres: ${hombres - 100}`}
+                                        description={`La edad media de los promovidos es de  ${moda} `}
+                                        size={'col-span-1'}
                                     />
+
                                     :
                                     <CardDashboard
-                                        title={'Promovidos vs lista nominal'}
-                                        data={`Promovidos: ${porcentaje}%`}
-                                        description={`De la lista nominal de  ${valueSeccion} `}
-                                        size={'col-span-1 '}
+                                        title={'Sexo'}
+                                        data={` Mujeres: ${sexo}% `}
+                                        description={`De una promedio de  ${hombres + mujeres} promovidos `}
+                                        size={'col-span-1'}
                                     />
-                                }
-
-                                <CardDashboard
-                                    title={'Edad'}
-                                    data={`Promedio entre: ${moda} - ${media} `}
-                                    description={`La edad media de los promovidos es de  ${moda} `}
-                                    size={'col-span-1'}
-                                />
-
-                                {
-                                    hombres > mujeres ?
-                                        <CardDashboard
-                                            title={'Sexo'}
-                                            data={` Hombres: ${hombres - 100}`}
-                                            description={`La edad media de los promovidos es de  ${moda} `}
-                                            size={'col-span-1'}
-                                        />
-
-                                        :
-                                        <CardDashboard
-                                            title={'Sexo'}
-                                            data={` Mujeres: ${sexo}% `}
-                                            description={`De una promedio de  ${hombres + mujeres} promovidos `}
-                                            size={'col-span-1'}
-                                        />
-                                }
+                            }
 
 
-                            </div>
-                            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-                                <Card className="col-span-4">
-                                    <CardHeader>
-                                        <CardTitle>Promovidos vs lista nominal</CardTitle>
-                                    </CardHeader>
-                                    <CardContent className="pl-2">
-                                        <SimplePie data={dataProSecc} />
-                                    </CardContent>
-                                </Card>
-                                <Card className="col-span-3">
-                                    <CardHeader>
-                                        <CardTitle>Sexo</CardTitle>
-                                        <CardDescription>
-                                        </CardDescription>
-                                    </CardHeader>
-                                    <CardContent>
-                                        <SimplePie data={dataSexo} />
-                                    </CardContent>
-                                </Card>
-                                <Card className="col-span-8">
-                                    <CardHeader>
-                                        <CardTitle>Edad</CardTitle>
-                                        <CardDescription>
-                                        </CardDescription>
-                                    </CardHeader>
-                                    <CardContent>
-                                        <SimpleBar data={dataYear} label1={'Promovidos'} color={'#24c35b'} />
-                                    </CardContent>
-                                </Card>
-                            </div>
-                        </TabsContent>
+                        </div>
+                        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+                            <Card className="col-span-4">
+                                <CardHeader>
+                                    <CardTitle>Promovidos vs lista nominal</CardTitle>
+                                </CardHeader>
+                                <CardContent className="pl-2">
+                                    <SimplePie data={dataProSecc} />
+                                </CardContent>
+                            </Card>
+                            <Card className="col-span-3">
+                                <CardHeader>
+                                    <CardTitle>Sexo</CardTitle>
+                                    <CardDescription>
+                                    </CardDescription>
+                                </CardHeader>
+                                <CardContent>
+                                    <SimplePie data={dataSexo} />
+                                </CardContent>
+                            </Card>
+                            <Card className="col-span-8">
+                                <CardHeader>
+                                    <CardTitle>Edad</CardTitle>
+                                    <CardDescription>
+                                    </CardDescription>
+                                </CardHeader>
+                                <CardContent>
+                                    <SimpleBar data={dataYear} label1={'Promovidos'} color={'#24c35b'} />
+                                </CardContent>
+                            </Card>
+                        </div>
+                    </TabsContent>
 
-                    </Tabs>
+                </Tabs>
+                :
+                <div className="">Seleccione una seccion para ver los resultados..</div>
+                }
                 </div>
             </div>
         </>

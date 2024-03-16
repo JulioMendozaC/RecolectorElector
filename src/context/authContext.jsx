@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 
-import { loginRequest, verifyRequest } from "../api/auth";
+import { loginRequest, UsersRequest, UserRequest, RegisterRequest, UserDeleteRequest, UserUpdateRequest, verifyRequest } from "../api/auth";
 
 
 export const AuthContext = createContext()
@@ -18,6 +18,9 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }) => {
 
     const [user, setUser] = useState(null)
+    const [response, setResponse] = useState(null)
+    const [editData, setEditData] = useState(null)
+
     const [errors, setErrors] = useState([])
     const [isloading, setIsLoading] = useState(true)
     const [isAutenticated, setIsAutenticated] = useState(false)
@@ -26,6 +29,7 @@ export const AuthProvider = ({ children }) => {
         try {
             const res = await loginRequest(user)
             setUser(res.data)
+            console.log(res.data)
             setIsAutenticated(true)
         } catch (error) {
             setErrors(error.response.data.message)
@@ -33,21 +37,62 @@ export const AuthProvider = ({ children }) => {
     }
 
     const logOut = async () => {
-       Cookies.remove('token')
-       setIsAutenticated(false)
-       setUser(null)
+        Cookies.remove('token')
+        setIsAutenticated(false)
+        setUser(null)
     }
-    const CreateData = async (user) => {
+
+    const Register = async (user) => {
         try {
-            const res = await loginRequest(user)
-            setUser(res.data)
-            setIsAutenticated(true)
+            const res = await RegisterRequest(user)
+            setResponse(res.data)
+            GetUsers()
             console.log(res.data)
         } catch (error) {
-            // setErrors(['Datos usuario o contraseña incorrectos'])
+            setErrors(error.response.data.message)
+        }
+    }
+
+    const GetUsers = async () => {
+        try {
+            const res = await UsersRequest()
+            setResponse(res.data)
+        } catch (error) {
+            setErrors(error.response.message)
 
         }
     }
+
+    const GetOneUsers = async (id) => {
+        try {
+            const res = await UserRequest(id)
+            setEditData(res.data)
+            console.log(res.data)
+        } catch (error) {
+            setErrors(error.response.message)
+
+        }
+    }
+
+    const UpdateUser = async (id, data) => {
+        try {
+            const res = await UserUpdateRequest(id, data)
+            setResponse(res.data)
+            GetUsers()
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    const DeleteUser = async (id) => {
+        try {
+            const res = await UserDeleteRequest(id)
+            setResponse(res.data)
+            GetUsers()
+        } catch (error) {
+            setErrors(error.response.message)
+        }
+    }
+
 
     useEffect(() => {
         async function CheckLogin() {
@@ -59,16 +104,22 @@ export const AuthProvider = ({ children }) => {
                 return setUser(null)
             }
             try {
-                const res = await verifyRequest(cookies.token);
-                if (!res.data) {
-                    setIsAutenticated(false);
+                if (cookies) {
+                    const res = await verifyRequest(cookies.token);
+                    console.log(res)
+
+
+                    if (!res.data) {
+                        setIsAutenticated(false);
+                        setIsLoading(false)
+                        return
+                    }
+
+                    setIsAutenticated(true)
+                    setUser(res.data);
                     setIsLoading(false)
-                    return
                 }
 
-                setIsAutenticated(true)
-                setUser(res.data);
-                setIsLoading(false)
             } catch (error) {
                 setIsAutenticated(false);
                 setUser(null);
@@ -94,11 +145,19 @@ export const AuthProvider = ({ children }) => {
     return (
         <AuthContext.Provider value={{
             user,
+            response,
             errors,
+            editData,
             isloading,
             isAutenticated,
+            GetUsers,
             login,
-            logOut
+            logOut,
+            Register,
+            GetOneUsers,
+            UpdateUser,
+            DeleteUser,
+
         }}>
             {children}
         </AuthContext.Provider>
